@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kegiatan - Natujaga</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/icons/Logo natujaga.png" alt="Natujaga Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-title">NATUJAGA</span>
+                    <span class="logo-subtitle">Jaga Alam, Rawat Masa Depan</span>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang-kami.html">Tentang Kami</a></li>
+                    <li><a href="program.html">Program</a></li>
+                    <li><a href="kegiatan.html" class="active">Kegiatan</a></li>
+                    <li><a href="artikel.html">Artikel</a></li>
+                    <li><a href="kontak.html">Kontak</a></li>
+                </ul>
+            </nav>
+            <a href="kontak.html" class="btn-community">
+                <span class="icon">🌿</span> Gabung Komunitas
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="section-preview" style="padding-top: 1rem;">
+            <div class="section-header-centered">
+                <span class="section-badge">🌿 Kegiatan Kami</span>
+                <h2>Gerakan Nyata, Dampak Bersama.</h2>
+                <p class="section-subtitle">Setiap aksi merupakan langkah kecil untuk menciptakan lingkungan yang lebih bersih, hijau, dan berkelanjutan.</p>
+                <div class="filter-tabs">
+                    <button class="tab-btn active" data-filter="semua">Semua Kegiatan</button>
+                    <button class="tab-btn" data-filter="Aksi Bersih">Aksi Bersih</button>
+                    <button class="tab-btn" data-filter="Penanaman">Penanaman</button>
+                    <button class="tab-btn" data-filter="Edukasi">Edukasi</button>
+                    <button class="tab-btn" data-filter="Sosial">Sosial</button>
+                </div>
+            </div>
+
+            <div class="kegiatan-grid" id="kegiatan-grid">
+                <!-- Kegiatan akan dirender dari data.js -->
+            </div>
+
+<!-- Tombol dihapus -->
+        </section>
+    </main>
+
+    <div class="footer-plants-banner">
+        <div class="grass-silhouette">🌿🌱🌿🌱🌿🌱🌿🌱🌿🌱🌿🌱🌿🌱🌿</div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Natujaga. Semua hak dilindungi.</p>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

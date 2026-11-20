@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail - Natujaga</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .image-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .image-item {
+            display: flex;
+            justify-content: center;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .image-item img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/icons/Logo natujaga.png" alt="Natujaga Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-title">NATUJAGA</span>
+                    <span class="logo-subtitle">Jaga Alam, Rawat Masa Depan</span>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang-kami.html">Tentang Kami</a></li>
+                    <li><a href="program.html">Program</a></li>
+                    <li><a href="kegiatan.html">Kegiatan</a></li>
+                    <li><a href="artikel.html">Artikel</a></li>
+                    <li><a href="kontak.html">Kontak</a></li>
+                </ul>
+            </nav>
+            <a href="kontak.html" class="btn-community">
+                <span class="icon">🌿</span> Gabung Komunitas
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="section-preview" style="padding-top: 1rem;">
+            <div class="section-header-flex">
+                <div>
+                    <span class="section-badge">🌿 Detail</span>
+                    <h2 id="detail-judul">Detail</h2>
+                    <div id="detail-meta" style="margin-top: 0.5rem; color: #64748b; font-size: 0.9rem; flex-wrap: wrap; gap: 1rem;"></div>
+                </div>
+                <a href="artikel.html" class="btn btn-outline-dark" id="back-to-list">← Kembali ke Daftar</a>
+            </div>
+
+            <div class="article-detail-content" style="margin-top: 2rem; line-height: 1.8; color: #4a5568;">
+                <div id="detail-isi" style="font-size: 1.1rem;"></div>
+                <div class="image-gallery" id="image-gallery">
+                    <!-- Images will be inserted here by script -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="footer-plants-banner">
+        <div class="grass-silhouette">🌿🌱🌿🌱🌿🌱🌿🌱🌿🌱🌿🌱🌿🌱🌿</div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Natujaga. Semua hak dilindungi.</p>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+
+        // Cari di articles (objek) atau di kegiatan (array)
+        let artikel = articles[id];
+        let source = 'artikel';
+
+        if (!artikel) {
+            artikel = kegiatan.find(k => k.id === id);
+            source = 'kegiatan';
+        }
+
+        if (artikel) {
+            document.getElementById('detail-judul').textContent = artikel.judul;
+
+            // Tombol kembali menyesuaikan ke Kegiatan atau Artikel
+            const backBtn = document.getElementById('back-to-list');
+            if (backBtn) {
+                backBtn.href = source === 'kegiatan' ? 'kegiatan.html' : 'artikel.html';
+            }
+
+            // Tampilkan metadata sesuai sumber
+            const metaContainer = document.getElementById('detail-meta');
+            if (source === 'artikel') {
+                metaContainer.innerHTML = `
+                    <span>${artikel.tanggal}</span>
+                    <span>Kategori: ${artikel.kategori}</span>
+                `;
+                document.getElementById('detail-isi').innerHTML = artikel.isi || '';
+            } else {
+                metaContainer.innerHTML = `
+                    <span>${artikel.tanggal}</span>
+                    <span>${artikel.kategori}</span>
+                `;
+                document.getElementById('detail-isi').innerHTML = `
+                    <h3>${artikel.judul}</h3>
+                    <p>${artikel.deskripsi}</p>
+                    <p><em>Dokumentasi kegiatan Natujaga.</em></p>
+                `;
+            }
+
+            // Tampilkan galeri gambar jika ada
+            const gallery = document.getElementById('image-gallery');
+            if (artikel.gambar && artikel.gambar.length > 0) {
+                gallery.style.display = 'flex';
+                artikel.gambar.forEach(gambarPath => {
+                    const item = document.createElement('div');
+                    item.className = 'image-item';
+                    const img = document.createElement('img');
+                    img.src = gambarPath;
+                    img.alt = artikel.judul;
+                    item.appendChild(img);
+                    gallery.appendChild(item);
+                });
+            } else {
+                gallery.style.display = 'none';
+            }
+        } else {
+            document.getElementById('detail-judul').textContent = 'Detail tidak ditemukan';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artikel - Natujaga</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/icons/Logo natujaga.png" alt="Natujaga Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-title">NATUJAGA</span>
+                    <span class="logo-subtitle">Jaga Alam, Rawat Masa Depan</span>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang-kami.html">Tentang Kami</a></li>
+                    <li><a href="program.html">Program</a></li>
+                    <li><a href="kegiatan.html">Kegiatan</a></li>
+                    <li><a href="artikel.html" class="active">Artikel</a></li>
+                    <li><a href="kontak.html">Kontak</a></li>
+                </ul>
+            </nav>
+            <a href="kontak.html" class="btn-community">
+                <span class="icon">🌿</span> Gabung Komunitas
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="section-preview" style="padding-top: 1rem;">
+            <div class="section-header-flex">
+                <div>
+                    <span class="section-badge">🌿 Artikel Terbaru</span>
+                    <h2>Dapatkan Informasi dan Inspirasi<br>untuk Lingkungan yang Lebih Baik.</h2>
+                </div>
+            </div>
+
+            <div class="article-preview-grid" id="article-grid" style="margin-top: 2rem;">
+                <!-- Artikel akan dirender dari data.js -->
+            </div>
+
+<!-- Tombol dihapus -->
+        </section>
+    </main>
+
+    <div class="footer-plants-banner">
+        <div class="grass-silhouette">🌿🌱🌿🌱🌿🌱🌿🌱🌿🌱🌿🌱🌿🌱🌿</div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Natujaga. Semua hak dilindungi.</p>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script>
+        function renderArticleGrid() {
+            const container = document.getElementById('article-grid');
+            if (!container) return;
+
+            container.innerHTML = '';
+            container.style.display = 'grid';
+            container.style.gridTemplateColumns = 'repeat(auto-fill, minmax(320px, 1fr))';
+            container.style.gap = '1.5rem';
+
+            // Sortir artikel berdasarkan tanggal terbaru
+            const articleList = Object.entries(articles).sort((a, b) => {
+                return new Date(b[1].tanggal) - new Date(a[1].tanggal);
+            });
+
+            if (articleList.length === 0) return;
+
+            articleList.forEach(([id, artikel], index) => {
+                const isMain = index === 0;
+                const card = document.createElement('div');
+                card.className = isMain ? 'article-main-card' : 'kegiatan-card';
+                card.style.cursor = 'pointer';
+                card.onclick = () => { window.location.href = `artikel-detail.html?id=${id}`; };
+
+                if (isMain) {
+                    card.style.gridColumn = '1 / -1';
+                    card.style.display = 'flex';
+                    card.style.flexDirection = window.innerWidth > 768 ? 'row' : 'column';
+                    const snippet = artikel.isi.replace(/<[^>]*>/g, ' ').substring(0, 200).trim() + '...';
+                    card.innerHTML = `
+                        <div class="article-thumb" style="background-image: url('${artikel.gambar && artikel.gambar.length ? artikel.gambar[0] : ''}'); width: ${window.innerWidth > 768 ? '40%' : '100%'}; height: ${window.innerWidth > 768 ? 'auto' : '250px'}; background-size: cover; background-position: center;"></div>
+                        <div class="article-info" style="padding: 2rem; flex: 1;">
+                            <span class="badge-tag">${artikel.kategori}</span>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">${artikel.judul}</h3>
+                            <p>${snippet}</p>
+                            <span class="link-more" style="margin-top: 1rem; display: block;">Baca Selengkapnya ❯</span>
+                        </div>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        <div class="kegiatan-thumb" style="background-image: url('${artikel.gambar && artikel.gambar.length ? artikel.gambar[0] : ''}'); height: 180px; background-size: cover; background-position: center;"></div>
+                        <div class="kegiatan-body">
+                            <span class="kegiatan-tag">${artikel.kategori}</span>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; min-height: 2.6rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${artikel.judul}</h3>
+                            <span class="date">${artikel.tanggal}</span>
+                        </div>
+                    `;
+                }
+                container.appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderArticleGrid);
+        window.addEventListener('resize', renderArticleGrid);
+    </script>
+</body>
+</html>

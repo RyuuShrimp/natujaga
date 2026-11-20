@@ -1,0 +1,54 @@
+    <script>
+        function renderArticleGrid() {
+            const container = document.getElementById('article-grid');
+            if (!container) return;
+
+            container.innerHTML = '';
+            container.style.display = 'grid';
+            container.style.gridTemplateColumns = 'repeat(auto-fill, minmax(320px, 1fr))';
+            container.style.gap = '1.5rem';
+
+            // Sortir artikel berdasarkan tanggal terbaru
+            const articleList = Object.entries(articles).sort((a, b) => {
+                return new Date(b[1].tanggal) - new Date(a[1].tanggal);
+            });
+
+            if (articleList.length === 0) return;
+
+            articleList.forEach(([id, artikel], index) => {
+                const isMain = index === 0;
+                const card = document.createElement('div');
+                card.className = isMain ? 'article-main-card' : 'kegiatan-card';
+                card.style.cursor = 'pointer';
+                card.onclick = () => { window.location.href = `artikel-detail.html?id=${id}`; };
+
+                if (isMain) {
+                    card.style.gridColumn = '1 / -1';
+                    card.style.display = 'flex';
+                    card.style.flexDirection = 'row';
+                    const snippet = artikel.isi.replace(/<[^>]*>/g, ' ').substring(0, 200).trim() + '...';
+                    card.innerHTML = `
+                        <div class="article-thumb" style="background-image: url('${artikel.gambar && artikel.gambar.length ? artikel.gambar[0] : ''}'); width: 40%; background-size: cover; background-position: center;"></div>
+                        <div class="article-info" style="padding: 2rem;">
+                            <span class="badge-tag">${artikel.kategori}</span>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">${artikel.judul}</h3>
+                            <p>${snippet}</p>
+                            <span class="link-more" style="margin-top: 1rem; display: block;">Baca Selengkapnya ❯</span>
+                        </div>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        <div class="kegiatan-thumb" style="background-image: url('${artikel.gambar && artikel.gambar.length ? artikel.gambar[0] : ''}'); height: 180px; background-size: cover; background-position: center;"></div>
+                        <div class="kegiatan-body">
+                            <span class="kegiatan-tag">${artikel.kategori}</span>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; min-height: 2.6rem;">${artikel.judul}</h3>
+                            <span class="date">${artikel.tanggal}</span>
+                        </div>
+                    `;
+                }
+                container.appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderArticleGrid);
+    </script>
